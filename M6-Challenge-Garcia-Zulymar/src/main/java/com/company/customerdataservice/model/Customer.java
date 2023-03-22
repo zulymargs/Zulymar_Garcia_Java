@@ -1,30 +1,27 @@
 /**---------------------------------------------------------
                         Customer class
-
+This Customer class defines a customer in the Customer
+ Data Service Application.A Customer have an id, first name,
+ last name,email, company, phone, address 1, address 2,
+ city, state, postal code, and country.
  Author: Zulymar Garcia Sonera
  ---------------------------------------------------------*/
 
 package com.company.customerdataservice.model;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-
-//using appropriate Spring annotations
-//        contains all necessary instance fields
-//        implements Serializable
-
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="customer")
 public class Customer implements Serializable {
+
+    //Automatically generated ID
     @Id
     @Column(name = "customer_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "first_name")
@@ -47,6 +44,7 @@ public class Customer implements Serializable {
 
     private String state;
 
+    @Column(name = "postal_code")
     private String postalCode;
 
     private String country;

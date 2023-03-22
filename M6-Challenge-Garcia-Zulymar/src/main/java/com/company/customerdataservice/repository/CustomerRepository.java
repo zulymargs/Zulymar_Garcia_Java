@@ -1,5 +1,7 @@
 /**---------------------------------------------------------
                     Customer Repository
+ -Used to implements JPA functionality an the connection
+ with the customer database.
 
  Author: Zulymar Garcia Sonera
  ---------------------------------------------------------*/
@@ -8,28 +10,13 @@
 package com.company.customerdataservice.repository;
 
 import com.company.customerdataservice.model.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.Set;
 
-import java.util.List;
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+    //JPA query for finding a customer record by state.
+    Set<Customer> findByState(String state);
 
-public interface CustomerRepository {
-    Customer save(Customer customer);
-
-
-//    Create a new customer record. 5 pts
-
-
-//    Update an existing customer record. 5 pts
-//
-//    Delete an existing customer record. 5 pts
- void deleteById(int id);
-
-
-//    Find a customer record by id. 5 pts
-
-    Customer findById(int id);
-
-    List<Customer> findByState(String state);
-
-
-//    Find customer records by state. 5 pts
 }

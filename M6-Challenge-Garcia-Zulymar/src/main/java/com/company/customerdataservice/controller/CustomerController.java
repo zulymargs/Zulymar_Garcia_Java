@@ -1,5 +1,6 @@
 /**---------------------------------------------------------
                     Customer Controller
+-Let the user create, get, update,and delete a customer
 
  Author: Zulymar Garcia Sonera
  ---------------------------------------------------------*/
@@ -12,26 +13,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 public class CustomerController {
     @Autowired
     CustomerRepository repo;
 
-//    A POST route that creates a new customer.
+//    Creates a new customer.
 @PostMapping("/customers")
 @ResponseStatus(HttpStatus.CREATED)
 public Customer addCustomer(@RequestBody Customer customer) {
     return repo.save(customer);
 }
 
-////    A PUT route that updates an existing customer. 10 pts
-@PutMapping("/customer/{id}")
+//    Updates an existing customer.
+@PutMapping("/customers")
 @ResponseStatus(HttpStatus.NO_CONTENT)
-public void updateCustomer(@PathVariable int id) {
-    repo.save(repo.findById(id));
+public void updateCustomer(@RequestBody Customer customer) {
+    repo.save(customer);
 }
 
 //    A DELETE route that deletes an existing customer. 10 pts
@@ -45,18 +48,35 @@ public void deleteCustomer(@PathVariable int id) {
 @GetMapping("/customers/{id}")
 public Customer getCustomerByID(@PathVariable int id) {
 
-    Optional<Customer> returnVal = repo.findById(id);
-    if (returnVal.isPresent()) {
-        return returnVal.get();
+    Optional<Customer> value = repo.findById(id);
+    if (value.isPresent()) {
+        return value.get();
     } else {
         return null;
     }
 }
 
-//    A GET route that returns all customers for a specific state.
-@GetMapping("/customers/{state}")
-public List<Customer> getCustomersByState(@PathVariable String state) {
-    return repo.findByState(state);
+//    Returns all customers for a specific state.
+@GetMapping("/customers/state/{state}")
+public Set<Customer> getCustomersByState(@PathVariable String state) {
+    Set<Customer> customerList= new HashSet<>();
+    for(Customer c: repo.findAll())
+    {
+        if(c.getState() == state)
+        {
+            customerList.add(c);
+        }
+    }
+
+    return customerList;
 }
+
+// Returns all customers
+@GetMapping("/customers")
+public List<Customer> getAllCustomers() {
+    return repo.findAll();
+}
+{}
+
 
 }
